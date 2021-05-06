@@ -15,6 +15,7 @@
     "gradle-to-js": "^2.0.0",
     "pbxproj": "^0.0.5",
     "plist": "^3.0.2",
-    "xcode-node": "^1.0.2"
+    "xcode-node": "^1.0.2",
+    "xml-js": "^1.6.11"
   }
 }
