@@ -5,6 +5,7 @@ const {exec} = require("child_process");
 const plist = require("plist");
 const Xcode = require("xcode-node").default;
 const g2js = require('gradle-to-js/lib/parser');
+const convert = require('xml-js');
 
 const readFile = path => {
   return new Promise((resolve, reject) => {
@@ -112,12 +113,18 @@ const start = async () => {
       default: {}
     };
 
+    const xml = await readFile(path + `/android/app/src/main/res/values/strings.xml`);
+    console.log(xml);
+
+
     const items = [];
     for (const key of Object.keys(flavors)) {
+
+      // convert.xml2json
       items.push({
         name: key,
         version
-      })
+      });
     }
 
     console.log(items);
