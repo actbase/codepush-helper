@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 const fs = require("fs");
-const { exec } = require("child_process");
+const {exec} = require("child_process");
 const readline = require("readline");
 const plist = require("plist");
-const pbxproj = require("pbxproj");
+const Xcode = require("xcode-node").default;
 
 const readFile = path => {
   return new Promise((resolve, reject) => {
@@ -49,7 +49,7 @@ const execute = cmd => {
         console.log(err);
         reject(err);
       } else {
-        resolve({ stdout, stderr });
+        resolve({stdout, stderr});
       }
     });
   });
@@ -58,33 +58,31 @@ const execute = cmd => {
 const start = async () => {
   let path = process.env.PWD;
   while (true) {
-    if (fs.existsSync(path + "/package.json")) break;
+    if (fs.existsSync(path + "/package.json")) {
+      break;
+    }
     if (path.length < 10) {
-      throw { message: "not found package.json" };
+      throw {message: "not found package.json"};
     }
     path = path.substring(0, path.lastIndexOf("/"));
   }
 
   const pkg = JSON.parse(await readFile(path + "/package.json"));
   if (
-    !pkg.dependencies["react-native"] ||
-    !pkg.dependencies["react-native-code-push"]
+      !pkg.dependencies["react-native"] ||
+      !pkg.dependencies["react-native-code-push"]
   ) {
-    throw { message: "not a codepush env" };
+    throw {message: "not a codepush env"};
   }
 
   let name = (await readDir(path + "/ios"))?.filter(v =>
-    v.endsWith(".xcodeproj")
+      v.endsWith(".xcodeproj")
   )?.[0];
   name = name.substring(0, name.indexOf(".xcode"));
 
-  console.log(name);
-
-  let pbx = (
-    await readFile(path + `/ios/${name}.xcodeproj/project.pbxproj`)
-  );
-  const r = pbxproj.parse(pbx);
-  console.log(r);
+  const project = new Xcode(path + `/ios/${name}.xcodeproj/project.pbxproj`);
+  const targets = project.getTargets();
+  console.log(targets);
 };
 console.log("is Execute");
 
