@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const {exec} = require("child_process");
+const readline = require("readline");
 const plist = require("plist");
 const Xcode = require("xcode-node").default;
 
