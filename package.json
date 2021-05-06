@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "pbxproj": "^0.0.5",
-    "plist": "^3.0.2"
+    "plist": "^3.0.2",
+    "xcode-node": "^1.0.2"
   }
 }
